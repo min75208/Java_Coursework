@@ -1,0 +1,24 @@
+
+public class WordNode {
+	String data;
+	WordNode next;
+	
+	public WordNode(String word, WordNode next){
+		this.data = word;
+		this.next = next;
+	}
+	
+	public WordNode(){
+		this.data = null;
+		this.next = null;
+	}
+	
+	public WordNode(String word){
+		this.data = word;
+		this.next = null;
+	}
+	
+	public String toString(){
+		return data;
+	}
+}
