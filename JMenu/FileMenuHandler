@@ -1,0 +1,57 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+
+public class FileMenuHandler implements ActionListener {
+   JFrame jframe;
+   
+   public FileMenuHandler (JFrame jf) {
+      jframe = jf;
+   }
+   
+   public void actionPerformed(ActionEvent event) {
+      String menuName = event.getActionCommand();
+      if (menuName.equals("Open"))
+         openFile();
+      else if (menuName.equals("Quit"))
+    	  System.exit(0);
+   } 
+   
+   private void openFile(){
+       TextFileInput inFile = new TextFileInput("Data.txt");
+       WordList linkedList = new WordList(); 
+       String in = inFile.readLine();
+       String[] words = new String[100];
+       int counter = 0;
+       Container contentPane = jframe.getContentPane();
+       TextArea area = new TextArea();
+       contentPane.add(area);
+       
+       while (in != null) {
+    	   words[counter] = in;
+    	   counter++;
+           in = inFile.readLine();
+       }
+       
+		for (int i = 0; i < counter - 1; ++i){
+				int minIndex = i;
+			for (int j = i + 1; j < counter; ++j){
+				if (words[j].compareTo(words[minIndex]) < 0) 
+					minIndex = j;
+			}
+				String temp = words[i];
+				words[i] = words[minIndex];
+				words[minIndex] = temp;
+		}
+		
+		int j = 0;
+		while (words[j] != null){
+			linkedList.append(words[j]);
+			j++;
+		}
+		
+		linkedList.toTextArea(area);
+        jframe.setVisible(true);  
+    }
+}
