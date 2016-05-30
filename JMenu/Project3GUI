@@ -1,0 +1,76 @@
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.TextArea;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+public class Project3GUI extends JFrame{
+	
+	public Project3GUI (String[] presort, WordList list){
+		setTitle("Word File");
+		setSize(500,500);
+		setLocation(100,100);
+		setDefaultCloseOperation(Project3GUI.EXIT_ON_CLOSE);
+		Container cPane = getContentPane();
+		TextArea unsorted = new TextArea();
+		TextArea sorted = new TextArea();
+		setLayout(new GridLayout(1,2));
+		cPane.add(unsorted);
+		cPane.add(sorted);
+		createFileMenu();
+		createDisplayMenu();
+		
+
+		for (int i = 0; i < presort.length ; i++){
+			if(presort[i] !=null) {
+				unsorted.append(presort[i] + "\n");
+			}
+		}
+		list.toTextArea(sorted);
+	}
+	
+	private void createFileMenu(){
+		JMenuItem item;
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		FileMenuHandler fmh = new FileMenuHandler(this);
+		
+		item = new JMenuItem("Open");
+		item.addActionListener(fmh);
+		fileMenu.add(item);
+		
+		fileMenu.addSeparator();
+		
+		item = new JMenuItem("Quit");
+		item.addActionListener(fmh);
+		fileMenu.add(item);
+		
+		setJMenuBar(menuBar);
+		menuBar.add(fileMenu);
+		
+	}
+	
+	private void createDisplayMenu(){
+		JMenuItem item;
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("Display");
+		FileMenuHandler fmh = new FileMenuHandler(this);
+		
+		item = new JMenuItem("Nouns");
+		item.addActionListener(fmh);
+		fileMenu.add(item);
+		
+		fileMenu.addSeparator();
+		
+		item = new JMenuItem("Verbs");
+		item.addActionListener(fmh);
+		fileMenu.add(item);
+		
+		setJMenuBar(menuBar);
+		menuBar.add(fileMenu);
+		
+	}
+	
+}
