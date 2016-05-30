@@ -1,0 +1,105 @@
+import java.awt.TextArea;
+import java.util.LinkedList;
+
+public class WordList{
+	
+	private WordNode first = new WordNode(null);
+	private WordNode last = first;
+	private int length = 0;
+
+	public int getLength(){
+	return length;
+	}//get length
+
+	public void append(String d){
+		WordNode n = new WordNode(d);
+		last.next = n;
+		last = n;
+		length++;
+	}//append
+
+	public void printList(){
+		WordNode p = first.next;
+		while(p != null){
+			System.out.println(p.data);
+			p = p.next;
+		}
+	}
+
+	public boolean contains(String s){
+		WordNode curr = first.next;
+		while (curr != null){
+			if (curr.data.equalsIgnoreCase(s)) return true;
+			curr = curr.next;
+		}///while
+		return false;
+	}//contains
+	
+
+	public void toTextArea(TextArea t){
+		WordNode p = first.next;
+		while(p != null){
+			t.append(p.data + "\n");
+			p = p.next;
+		}
+	}//method
+
+	public void addMiddle(String s){
+		WordNode n = new WordNode(s);
+		WordNode p = first.next;
+		//adds new word to front of list, if thats where it belongs
+		if(p.data.compareToIgnoreCase(n.data) > 0){
+			n.next = p;
+			first.next = n;
+			return;
+		}//if
+		//the node curr is used, to represent what comes after the new word, while p
+		//represents what comes previously
+		WordNode curr = first.next.next;
+		
+		if(p.data.compareToIgnoreCase(n.data) < 0 && curr.data.compareToIgnoreCase(n.data) > 0){
+			p.next = n;
+			n.next = curr;
+			return;
+		}//if
+		
+		if (curr.data.compareToIgnoreCase(n.data) < 0){
+			while (curr.data.compareToIgnoreCase(n.data) < 0 && curr.next != null){
+				curr = curr.next;
+				p = p.next;
+			}
+			
+			if(curr.data.compareToIgnoreCase(n.data) < 0 && curr.next == null){
+				curr.next = n;
+				curr = curr.next;
+				p = p.next;
+			}//if
+			else{
+				p.next = n;
+				n.next = curr;
+			}//else
+		}//outer if
+
+		length++;
+	}//addMiddle
+	
+	public void removeNode(String s){
+		if(contains(s)){
+		WordNode p = first.next;
+			if(p.data.equalsIgnoreCase(s)){
+				first.next = p.next;
+				p.next = null;
+			}
+			else if (!p.data.equalsIgnoreCase(s)){
+				WordNode curr = first.next.next;
+				while(!curr.data.equalsIgnoreCase(s)){
+					curr = curr.next;
+					p = p.next;
+				}//while
+				p.next = curr.next;
+				curr.next = null;
+			}//else
+		}// if contains
+		else return;
+	}//removeNode
+}//class
