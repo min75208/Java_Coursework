@@ -1,0 +1,59 @@
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class Project4 {
+
+	public static void main(String[] args) {
+		HashMap<String, String> hashMap = new HashMap<String, String>();
+		TreeMap<String, String> treeMap = new TreeMap<>(new WordComparator());
+		
+		TextFileInput input = new TextFileInput("Data.txt");
+		String[] wordArray = new String[50]; 
+		String[] hArray = new String[50];
+		String[] tArray = new String[50];
+		int count = 0;
+		int k = 0, c = 0;
+		String line = input.readLine();
+		
+		while(line != null){
+			wordArray[count] = line; 
+			count++;
+			line = input.readLine();
+		}
+		System.out.println(count);
+		
+		for(int i = 0; i < count; i++){
+			hashMap.put(wordArray[i], " ");
+		}
+		
+		Iterator<String> itr;
+
+		itr = hashMap.keySet().iterator();
+		while(itr.hasNext()){
+			hArray[k] = (String) itr.next();
+			k++;
+		}
+		
+		for(int j = 0; j < count; j++){
+			treeMap.put(wordArray[j], " ");
+		}
+		
+		Set set = treeMap.entrySet();
+		Iterator i = set.iterator();
+		Map.Entry<String, String> me;
+		
+		while(i.hasNext()){
+			me = (Map.Entry)i.next();
+			tArray[c] = (String)me.getKey();
+			c++;
+		}
+		
+		Project4GUI p4GUI = new Project4GUI(hArray, tArray);
+		p4GUI.setDefaultCloseOperation(Project4GUI.DISPOSE_ON_CLOSE);
+		p4GUI.setVisible(true);
+	}
+
+}
