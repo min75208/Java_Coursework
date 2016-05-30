@@ -1,0 +1,10 @@
+import java.util.Comparator;
+
+public class WordComparator implements Comparator<String> {
+	public int compare(String a, String b) {
+        if( a.equalsIgnoreCase( b ) )
+            return a.compareTo( b );
+        else
+            return a.compareToIgnoreCase( b );
+    }
+}
