@@ -1,0 +1,50 @@
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.TextArea;
+
+import javax.swing.JFrame;
+
+public class Project2GUI {
+	static JFrame myFrame;
+	static Container cPane;
+	static TextArea unsortedList, sortedList, linkedList;
+	
+	public static void initialize(){
+		
+		unsortedList = new TextArea();
+		sortedList = new TextArea();
+		linkedList = new TextArea();
+		myFrame = new JFrame();
+		myFrame.setSize(600,300);
+		myFrame.setLocation(200,200);
+		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		myFrame.setLayout(new GridLayout(1,3));
+		myFrame.setTitle("Word File");
+		
+		cPane = myFrame.getContentPane();
+		cPane.add(unsortedList);
+		cPane.add(sortedList);
+		cPane.add(linkedList);
+		
+		myFrame.setVisible(true);
+	}
+
+	public static void output(String[] WordArray, String textArea, int size){
+		for(int i = 0; i < size; i++){
+			if(textArea == "unsortedList")
+				unsortedList.append(WordArray[i] + "\n");
+			if(textArea == "sortedList")
+				sortedList.append(WordArray[i] + "\n");
+		}
+	}
+	
+	 public void LinkedListPrint(WordList word) {
+		      WordNode change = word.first.next;
+		      while(change != null) {
+		         linkedList.append(change.data+"\n");
+		         change = change.next;
+		      }
+		   }
+
+
+}
