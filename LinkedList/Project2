@@ -1,0 +1,105 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.StringTokenizer;
+
+public class Project2 {
+	
+	static TextFileInput inFile;
+	static String inFileName = "Words.txt";
+	static int count = 0;
+	static String[] Words, wordList, wordArray;
+    static StringTokenizer myTokens;
+	
+	public static void main(String[] args){
+		Project2GUI myGUI=new Project2GUI();
+		WordList ln = new WordList();
+		
+	    myGUI.initialize();
+		wordList = readFile(inFileName);
+		
+		myGUI.output(wordList, "unsortedList", count);
+		
+		selectionSort(wordList);
+		myGUI.output(wordList, "sortedList", count);
+		
+		for( int i = 0; Words[i] != null ; i++){
+			ln.add(Words[i]);
+		}
+		
+		command(ln, myGUI);
+	}
+	
+	public static String[] readFile(String fileName){
+		
+		Words = new String[50];//This line could be removed.
+		inFile = new TextFileInput(fileName);
+		String line;
+		line = inFile.readLine();
+		while(line != null){
+			if(checkLetters(line)){
+				Words[count]=line;
+				count++;
+			}
+			line = inFile.readLine();
+		}
+		return Words;
+	}
+	
+	public static boolean checkLetters( String checkWord){
+		for (int i = 0; i < checkWord.length(); i++){
+			 char findLetter = checkWord.charAt(i);
+			 if (!Character.isLetter(findLetter)){
+				 return false;
+			 }
+		}
+		return true;
+	}
+	
+	public static void selectionSort(String [] array){
+		String temp;
+		
+		for(int i = 0; i < count - 1; i++){ 
+	         int indexLowest = i;
+	         for(int j = i + 1; j < count; j++){
+	             if((array[j].compareTo(array[indexLowest])) < 0) 
+	            	 indexLowest = j;
+	         }
+	         
+	         if(array[indexLowest] != array[i]){
+	            temp = array[indexLowest];
+	            array[indexLowest] = array[i];
+	            array[i] = temp;     
+	         }
+		}
+	}
+	
+	public static void command(WordList newWords, Project2GUI p2GUI){
+		String inputWord = "";
+			
+		while( !inputWord.equalsIgnoreCase("Stop")){					
+			inputWord = JOptionPane.showInputDialog(null, "Enter Command:");
+		    myTokens = new StringTokenizer(inputWord, ",");
+		    
+		    int i=0;
+		    while (myTokens.hasMoreTokens()) {
+		       wordArray[i] = myTokens.nextToken();
+		       i++;
+		    }
+		
+		    if (wordArray[0].equalsIgnoreCase("add ")){
+	            for (int j = 1; j<wordArray.length; j++){
+	               newWords.add(wordArray[i]);
+	            }
+	            p2GUI.LinkedListPrint(newWords);
+	         }
+	         else if(wordArray[0].equalsIgnoreCase("delete ")){
+	            for (int j = 1; j < wordArray.length; j++){
+	               newWords.delete(wordArray[i]);
+	            }
+	            p2GUI.LinkedListPrint(newWords);
+	         }
+		} 
+	}
+	
+	
+}
