@@ -1,0 +1,146 @@
+import javax.swing.JOptionPane;
+
+import java.util.Collection;
+import java.util.StringTokenizer;
+
+public class Project3 {
+
+	public static void main(String[] args){
+		TextFileInput input = new TextFileInput("Data.txt");
+		String[] wordArray = new String[100];
+		String[] sorted = new String[100];
+		WordList wl = new WordList();
+		int count = 0;
+		String line = input.readLine();
+		
+		while(line != null){
+				wordArray[count] = line;
+				count++;
+				line = input.readLine();
+		}
+		
+		for(int i = 0; i <= count; i++) 
+			sorted[i] = wordArray[i];
+		
+		for (int i = 0; i < count - 1; ++i){
+				int minIndex = i;
+			for (int j = i + 1; j < count; ++j){
+				if (sorted[j].compareTo(sorted[minIndex]) < 0) 
+					minIndex = j;
+			}
+				String temp = sorted[i];
+				sorted[i] = sorted[minIndex];
+				sorted[minIndex] = temp;
+		}
+		
+	    int k = 0;
+		while (sorted[k] != null){
+			wl.append(sorted[k]);
+			k++;
+		}
+		Project3GUI p3GUI = new Project3GUI(wordArray, wl);
+		p3GUI.setDefaultCloseOperation(Project3GUI.DISPOSE_ON_CLOSE);
+		p3GUI.setVisible(true);
+		
+		String command = JOptionPane.showInputDialog(null,"Enter a command");
+		
+		command.toLowerCase();
+		
+		if(!command.startsWith("add") && !command.equals("stop") && !command.startsWith("delete")){
+			JOptionPane.showMessageDialog(null, "invalid command");
+			System.exit(0);
+		}
+		
+		while(!command.equalsIgnoreCase("stop")){
+			
+			if(command.startsWith("add")){
+				
+				if (!command.substring(4).contains(",")){
+					wordArray[count] = command.substring(4);
+					wl.addMiddle(command.substring(4));
+					sorted[count] = command.substring(4);
+					count++;
+				}
+			
+				else{
+					StringTokenizer st = new StringTokenizer(command.substring(4),",");
+
+					for(int i = 0; i < st.countTokens() + 2;i++){
+						String nextWord = st.nextToken();
+						wordArray[count] = nextWord;
+						wl.addMiddle(nextWord);
+						sorted[count] = nextWord;
+						count++;
+					}
+				}
+			
+			
+				for(int i = 0; i < count - 1; i++){
+					int indexLowest = i;
+					for (int l = i + 1; l < count; l++){
+						if(sorted[l].compareToIgnoreCase(sorted[indexLowest]) < 0) 
+							indexLowest = l;
+					}
+					
+					if (sorted[indexLowest] != sorted[i] ){
+						String temp = sorted[indexLowest];
+						sorted[indexLowest] = sorted[i];
+						sorted[i] = temp;
+					}
+				}
+				
+				Project3GUI test = new Project3GUI(wordArray, wl);
+				test.setVisible(true);
+			}
+			
+			if(command.startsWith("delete")){
+				if (!command.substring(7).contains(",")){
+					String wordToDelete = command.substring(7);
+					wordArray = removeWord(wordArray,wordToDelete);
+					wl.removeNode(wordToDelete);
+					sorted = removeWord(sorted,wordToDelete);
+					count--;
+				}
+				else {
+					StringTokenizer st = new StringTokenizer(command.substring(7),",");
+				
+					for(int i = 0; i < st.countTokens() + 2;i++){
+						String nextWord = st.nextToken();
+						wordArray = removeWord(wordArray, nextWord);
+						wl.removeNode(nextWord);
+						sorted = removeWord(sorted,nextWord);
+						count--;
+					}
+				}
+				
+				Project3GUI test = new Project3GUI(wordArray, wl);
+				test.setVisible(true);
+			}
+			
+			command = JOptionPane.showInputDialog(null,"Enter a command");
+			if(!command.startsWith("add") && !command.equals("stop") && !command.startsWith("delete")){
+				JOptionPane.showMessageDialog(null, "invalid command");
+				System.exit(0);
+			}
+		}
+			
+	}	
+	
+	public static String[] removeWord(String[] array, String s){
+		int lengthOld = 1;
+		while (array[lengthOld] != null){
+			lengthOld++;
+		}
+		
+		String[] newArray = new String[100];
+		int index = 0;
+		for(int i = 0; i < lengthOld; i++){
+			if(!array[i].equalsIgnoreCase(s)){
+				newArray[index] = array[i];
+				index++;
+			}
+		}
+		return newArray;
+	}
+	
+}
