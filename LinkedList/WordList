@@ -1,0 +1,87 @@
+public class WordList {
+	
+	public WordNode first = new WordNode(null);
+	private WordNode last = new WordNode(null);
+	private int length = 0; 
+
+	public int getLength() {
+		return length;
+	}
+	
+	public void append(String w){
+		WordNode n = new WordNode(w);
+		last.next = n;
+		last = n;
+		length++;
+	}
+	
+	 public void prepend(String d) {
+		  WordNode temp = new WordNode(d);
+		  temp.next = this.first.next;
+		  this.first.next = temp;
+		  this.length++;
+	 }
+	
+	public void delete(String d) {
+		  WordNode current = first.next;
+		  WordNode pre = first;
+		  
+		  while(current != null) {
+			  if (current.data.equals(d)) {
+				  pre.next = current.next; 
+				  this.length--;
+				  return;
+			  } 
+			  else {
+				  current = current.next;
+				  pre = pre.next;
+			  }  
+		  }
+	}
+
+	public void add(String d){
+		WordNode pre = first; 
+	    WordNode current = new WordNode(d);
+
+	      while(pre.next!= null){
+	         if(pre.next.data.compareTo(d)>0) break;
+	          	pre = pre.next;
+	      }
+	      
+	      current.next=pre.next;
+	      pre.next = current;
+	      this.length++; 
+	      
+	      return;
+	}
+		
+	public String toString() {
+		  WordNode p = first.next;
+		  String returnString = "";
+		  
+		  while (p != null) {
+			  returnString += p.data + " ";
+			  p = p.next;
+		  }
+		  
+		  return returnString;
+	}
+	
+	public boolean equals(Object other) {
+		  if (other == null || getClass() != other.getClass() || length != ((WordList) other).length)
+			  return false;
+
+		  WordNode nodeThis = first;
+		  WordNode nodeOther = ((WordList) other).first;
+		  
+		  while (nodeThis != null) {
+			  if (nodeThis.data != nodeOther.data)
+				  return false;
+
+			  nodeThis = nodeThis.next;
+			  nodeOther = nodeOther.next;
+		  } 
+		  return true;
+	} 
+
+}
